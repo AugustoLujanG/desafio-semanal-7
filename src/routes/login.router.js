@@ -1,5 +1,6 @@
 import express from 'express';
 import { userModel } from '../DAO/models/users.model.js';
+import { isValidPassword } from '../config.js';
 
 export const loginRouter = express.Router();
 
@@ -10,7 +11,7 @@ loginRouter.post('/', async (req, res) => {
   }
   try {
     const foundUser = await userModel.findOne({ email }).exec();
-    if (foundUser && foundUser.password === password) {
+    if (foundUser && isValidPassword(password, foundUser.password)) {
       req.session.firstName = foundUser.firstName;
       req.session.email = foundUser.email;
       req.session.admin = foundUser.admin;

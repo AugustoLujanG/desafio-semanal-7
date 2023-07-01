@@ -1,5 +1,6 @@
 import express from 'express';
 import { userModel } from '../DAO/models/users.model.js';
+import { createHash } from '../config.js';
 
 export const registerRouter = express.Router();
 
@@ -13,7 +14,7 @@ registerRouter.post('/', async (req, res) => {
     return res.status(400).render('error-page', { msg: 'Datos incorrectos' });
   }
   try {
-    await userModel.create({ firstName, lastName, age, email, password });
+    await userModel.create({ firstName, lastName, age, email, password: createHash(password) });
     req.session.firstName = firstName;
     req.session.email = email;
     return res.status(201).render('success-login');
