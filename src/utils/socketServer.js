@@ -1,59 +1,43 @@
 import { Server } from 'socket.io';
 import { msgModel } from '../DAO/models/msgs.model.js';
-import ProductManager from '../DAO/productManager.js';
 import { productService } from '../services/product.service.js';
-
-const productManager = new ProductManager('db/products.json');
 
 export function connectSocketServer(httpServer) {
   // CONFIG DE SOCKET.IO
   const socketServer = new Server(httpServer);
+
+  function validateProductFields(newProd) {
+    const requiredFields = ['title', 'description', 'category', 'price', 'code', 'stock'];
+    const typeChecks = {
+      title: 'string',
+      description: 'string',
+      category: 'string',
+      price: 'number',
+      code: 'string',
+      stock: 'number',
+    };
+
+    for (const field of requiredFields) {
+      if (!newProd[field]) {
+        console.log(`El campo '${field}' es obligatorio`);
+        return false;
+      }
+
+      if (typeof newProd[field] !== typeChecks[field]) {
+        console.log(`El campo '${field}' debe ser de tipo '${typeChecks[field]}'`);
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   socketServer.on('connection', async socket => {
     console.log(`New client: ${socket.id}`);
 
     socket.on('new-product', async newProd => {
       try {
-        if (
-          !newProd.title ||
-          !newProd.description ||
-          !newProd.category ||
-          !newProd.price ||
-          !newProd.code ||
-          !newProd.stock
-        ) {
-          console.log('Todos los campos son obligatorios');
-          return;
-        }
-
-        // Validar el tipo de dato de los campos
-        if (typeof newProd.title !== 'string') {
-          console.log("El campo 'title' debe ser una cadena de caracteres");
-          return;
-        }
-
-        if (typeof newProd.description !== 'string') {
-          console.log("El campo 'description' debe ser una cadena de caracteres");
-          return;
-        }
-
-        if (typeof newProd.category !== 'string') {
-          console.log("El campo 'category' debe ser una cadena de caracteres");
-          return;
-        }
-
-        if (typeof newProd.price !== 'number') {
-          console.log("El campo 'price' debe ser un número");
-          return;
-        }
-
-        if (typeof newProd.code !== 'string') {
-          console.log("El campo 'code' debe ser una cadena de caracteres");
-          return;
-        }
-
-        if (typeof newProd.stock !== 'number') {
-          console.log("El campo 'stock' debe ser un número");
+        if (!validateProductFields(newProd)) {
           return;
         }
 

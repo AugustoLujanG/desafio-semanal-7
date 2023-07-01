@@ -30,19 +30,3 @@ registerRouter.post(
 registerRouter.get('/failregister', async (req, res) => {
   return res.status(400).render('error-page', { msg: 'Controla tu email e intenta más tarde' });
 });
-
-// registerRouter.post('/', async (req, res) => {
-//   const { firstName, lastName, age, email, password } = req.body;
-//   if (!firstName || !lastName || !age || !email || !password) {
-//     return res.status(400).render('error-page', { msg: 'Datos incorrectos' });
-//   }
-//   try {
-//     await userModel.create({ firstName, lastName, age, email, password: createHash(password) });
-//     req.session.firstName = firstName;
-//     req.session.email = email;
-//     return res.status(201).render('success-login');
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(400).render('error-page', { msg: 'Controla tu email y intenta más tarde' });
-//   }
-// });

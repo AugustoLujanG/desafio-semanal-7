@@ -9,6 +9,6 @@ export async function connectMongo() {
     console.log('plug to mongo!');
   } catch (e) {
     console.log(e);
-    throw 'can not connect to the db';
+    throw new Error('Cannot connect to the database');
   }
 }
