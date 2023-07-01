@@ -5,10 +5,8 @@ class CartService {
   async createCart(products) {
     try {
       const cart = await cartModel.create(products);
-      console.log(cart);
       const cartId = cart.toObject();
       const cartIdString = cartId._id.toString();
-      console.log(cartIdString);
       return cartIdString;
     } catch (error) {
       throw new Error('Error al crear el carrito');
@@ -34,7 +32,6 @@ class CartService {
   }
 
   async addProductToCart(cartId, productId) {
-    console.log(productId);
     try {
       const cart = await cartModel.findById(cartId).exec();
       const product = await productModel.findById(productId).exec();
@@ -57,8 +54,6 @@ class CartService {
         cart.products[productIndex].quantity += 1;
         await cart.save();
       }
-
-      console.log(productIndex);
 
       return cart;
     } catch (error) {

@@ -9,8 +9,8 @@ export const cartsRouter = express.Router();
 cartsRouter.get('/:cid', checkUser, async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const user = req.session.firstName;
-    const isAdmin = req.session.admin;
+    const user = req.session.user.firstName;
+    const isAdmin = req.session.user.admin;
 
     const cart = await cartService.getCart(cartId);
 

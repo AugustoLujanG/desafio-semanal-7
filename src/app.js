@@ -2,8 +2,10 @@ import MongoStore from 'connect-mongo';
 import express from 'express';
 import handlebars from 'express-handlebars';
 import session from 'express-session';
+import passport from 'passport';
 import path from 'path';
 import { __dirname } from './config.js';
+import { iniPassport } from './config/passport.config.js';
 import { cartsRouter } from './routes/carts.router.js';
 import { home } from './routes/home.router.js';
 import { initRouter } from './routes/init.router.js';
@@ -50,16 +52,18 @@ app.use(
   })
 );
 app.get('/session', (req, res) => {
-  console.log(req.session);
   if (req.session?.cont) {
     req.session.cont++;
     res.send(JSON.stringify(req.session));
   } else {
     req.session.cont = 1;
-    req.session.busqueda = 'cetosis';
     res.send(JSON.stringify(req.session));
   }
 });
+
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //TODOS MIS ENDPOINTS
 app.use('/api/products', productsRouter);

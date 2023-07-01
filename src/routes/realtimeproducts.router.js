@@ -12,21 +12,18 @@ const productManager = new ProductManager('db/products.json');
 realTimeProducts.get('/', checkAdmin, async (req, res) => {
   try {
     const queryParams = req.query;
-    const user = req.session.firstName;
-    const isAdmin = req.session.admin;
+    const user = req.session.user.firstName;
+    const isAdmin = req.session.user.admin;
 
     const paginatedProductsResponse = await productService.getAll(queryParams);
     const paginatedProducts = paginatedProductsResponse.modifiedProducts;
     const paginated = paginatedProductsResponse.products;
-    console.log(paginated.nextPage);
-    res
-      .status(200)
-      .render('realtimeproducts', {
-        products: paginatedProducts,
-        paginated: paginated,
-        user,
-        isAdmin,
-      });
+    res.status(200).render('realtimeproducts', {
+      products: paginatedProducts,
+      paginated: paginated,
+      user,
+      isAdmin,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
