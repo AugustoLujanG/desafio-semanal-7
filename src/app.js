@@ -14,6 +14,7 @@ import { logoutRouter } from './routes/logout.router.js';
 import { productsRouter } from './routes/products.router.js';
 import { realTimeProducts } from './routes/realtimeproducts.router.js';
 import { registerRouter } from './routes/register.router.js';
+import { sessionsRouter } from './routes/sessions.router.js';
 import { testChatRouter } from './routes/test-chat.router.js';
 import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
@@ -67,6 +68,7 @@ app.use(passport.session());
 
 //TODOS MIS ENDPOINTS
 app.use('/api/products', productsRouter);
+app.use('/api/sessions', sessionsRouter);
 app.use('/carts', cartsRouter);
 app.use('/', initRouter);
 app.use('/login', loginRouter);

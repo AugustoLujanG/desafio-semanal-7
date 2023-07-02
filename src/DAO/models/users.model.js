@@ -5,21 +5,22 @@ export const userModel = model(
   'users',
   new Schema({
     firstName: {
-      type: String,
       max: 100,
+      type: String,
     },
     lastName: {
-      type: String,
       max: 100,
+      type: String,
     },
     password: {
-      type: String,
       max: 100,
+      required: false,
+      type: String,
     },
     email: {
-      type: String,
-      required: true,
       max: 100,
+      required: true,
+      type: String,
       unique: true,
     },
 
